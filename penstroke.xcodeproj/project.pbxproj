@@ -16,6 +16,8 @@
 		2B6B4A3A2C2EDC140092D45E /* penstrokeTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B4A392C2EDC140092D45E /* penstrokeTests.swift */; };
 		2B6B4A442C2EDC140092D45E /* penstrokeUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B4A432C2EDC140092D45E /* penstrokeUITests.swift */; };
 		2B6B4A462C2EDC140092D45E /* penstrokeUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B4A452C2EDC140092D45E /* penstrokeUITestsLaunchTests.swift */; };
+		2B6B4A532C2EF34A0092D45E /* BaseController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B4A522C2EF34A0092D45E /* BaseController.swift */; };
+		2B6B4A552C2EF88C0092D45E /* CustomCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B6B4A542C2EF88C0092D45E /* CustomCollectionViewCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -49,6 +51,8 @@
 		2B6B4A3F2C2EDC140092D45E /* penstrokeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = penstrokeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		2B6B4A432C2EDC140092D45E /* penstrokeUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = penstrokeUITests.swift; sourceTree = "<group>"; };
 		2B6B4A452C2EDC140092D45E /* penstrokeUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = penstrokeUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		2B6B4A522C2EF34A0092D45E /* BaseController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseController.swift; sourceTree = "<group>"; };
+		2B6B4A542C2EF88C0092D45E /* CustomCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCollectionViewCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -102,6 +106,8 @@
 				2B6B4A222C2EDC110092D45E /* AppDelegate.swift */,
 				2B6B4A242C2EDC110092D45E /* SceneDelegate.swift */,
 				2B6B4A262C2EDC110092D45E /* ViewController.swift */,
+				2B6B4A542C2EF88C0092D45E /* CustomCollectionViewCell.swift */,
+				2B6B4A522C2EF34A0092D45E /* BaseController.swift */,
 				2B6B4A282C2EDC110092D45E /* Main.storyboard */,
 				2B6B4A2B2C2EDC140092D45E /* Assets.xcassets */,
 				2B6B4A2D2C2EDC140092D45E /* LaunchScreen.storyboard */,
@@ -259,7 +265,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				2B6B4A272C2EDC110092D45E /* ViewController.swift in Sources */,
+				2B6B4A552C2EF88C0092D45E /* CustomCollectionViewCell.swift in Sources */,
 				2B6B4A232C2EDC110092D45E /* AppDelegate.swift in Sources */,
+				2B6B4A532C2EF34A0092D45E /* BaseController.swift in Sources */,
 				2B6B4A252C2EDC110092D45E /* SceneDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -457,6 +465,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yumiya.penstroke;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -485,6 +496,9 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.yumiya.penstroke;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
