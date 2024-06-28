@@ -18,8 +18,6 @@ class CustomCollectionViewCell: UICollectionViewCell {
         view.minimumZoomScale = 1.0
         view.maximumZoomScale = 1.0
         view.layer.borderWidth = 1.0
-        
-       
         view.allowsFingerDrawing = true
         return view
     }()
@@ -44,14 +42,6 @@ class CustomCollectionViewCell: UICollectionViewCell {
             customView.widthAnchor.constraint(equalToConstant: 150),
             customView.heightAnchor.constraint(equalToConstant: 150)
         ])
-        
-        // Configure the PKCanvasView for drawing
-        if let window = UIApplication.shared.windows.first {
-            let toolPicker = PKToolPicker()
-            toolPicker.setVisible(true, forFirstResponder: customView)
-            toolPicker.addObserver(customView)
-            customView.becomeFirstResponder()
-        }
     }
     
     required init?(coder: NSCoder) {

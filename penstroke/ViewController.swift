@@ -3,6 +3,8 @@ import UIKit
 class ViewController: BaseController, UICollectionViewDataSource, UICollectionViewDelegate {
 
     var collectionView: UICollectionView!
+    var tapGestureRecognizer: UITapGestureRecognizer!
+    var disableScrollTimer: Timer?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -23,8 +25,26 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         // Add to view
         self.view.addSubview(collectionView)
         
+        
+        // Add pan gesture recognizer to the collection view
+        tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTapGesture(_:)))
+        self.view.addGestureRecognizer(tapGestureRecognizer)
+        
         // Disable scrolling
         collectionView.isScrollEnabled = false
+        
+        collectionView.isUserInteractionEnabled = true
+    }
+    
+    @objc func handleTapGesture(_ gesture: UITapGestureRecognizer) {
+        let touchPoint = gesture.location(in: self.view)
+        
+        let indexPath = collectionView.indexPathForItem(at: touchPoint)
+           
+        if (indexPath == nil) {
+            collectionView.isScrollEnabled = true
+            startDisableScrollTimer()
+        }
     }
 
     // MARK: - UICollectionViewDataSource
@@ -40,6 +60,15 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         // Custom view can be configured here if needed
         return cell
     }
+    
+    func startDisableScrollTimer() {
+        disableScrollTimer?.invalidate() // Invalidate previous timer if exists
+        disableScrollTimer = Timer.scheduledTimer(withTimeInterval: 3.0, repeats: false) { [weak self] _ in
+            self!.collectionView.isScrollEnabled = false // Disable scrolling after 3 seconds
+            self?.disableScrollTimer = nil // Clean up timer reference
+        }
+    }
+        
 
     // MARK: - UICollectionViewDelegate
 
