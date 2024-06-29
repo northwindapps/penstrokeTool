@@ -8,6 +8,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     var tabBar: UITabBar!
     var textField: UITextField!
     var label: UILabel!
+    var button: UIButton!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -24,9 +25,16 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         label.text = "Label below text field"
         label.textAlignment = .center
         
-        // Add text field and label to view
+        // Initialize button
+        button = UIButton(type: .system)
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Add to the list", for: .normal)
+        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        
+        // Add text field, label, and button to view
         self.view.addSubview(textField)
         self.view.addSubview(label)
+        self.view.addSubview(button)
         
         
         // Initialize layout
@@ -76,8 +84,13 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
             // Label constraints
             label.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 10),
             label.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
-            label.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
             label.heightAnchor.constraint(equalToConstant: 30),
+            
+            // Button constraints
+            button.centerYAnchor.constraint(equalTo: label.centerYAnchor),
+            button.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 10),
+            button.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+            button.widthAnchor.constraint(equalToConstant: 150),
             
             // Collection view constraints
             collectionView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10),
@@ -91,6 +104,11 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
             tabBar.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             tabBar.heightAnchor.constraint(equalToConstant: 49) // Default height for UITabBar
         ])
+    }
+    
+    @objc func buttonTapped() {
+        print("Button tapped!")
+        // Handle button tap action here
     }
     
     @objc func handleTapGesture(_ gesture: UITapGestureRecognizer) {
