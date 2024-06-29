@@ -7,6 +7,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     var disableScrollTimer: Timer?
     var tabBar: UITabBar!
     var textField: UITextField!
+    var label: UILabel!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -17,8 +18,16 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         textField.borderStyle = .roundedRect
         textField.placeholder = "Enter text here"
         
-        // Add text field to view
+        // Initialize label
+        label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.text = "Label below text field"
+        label.textAlignment = .center
+        
+        // Add text field and label to view
         self.view.addSubview(textField)
+        self.view.addSubview(label)
+        
         
         // Initialize layout
         let layout = UICollectionViewFlowLayout()
@@ -64,8 +73,14 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
             textField.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
             textField.heightAnchor.constraint(equalToConstant: 40),
             
+            // Label constraints
+            label.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 10),
+            label.leadingAnchor.constraint(equalTo: self.view.leadingAnchor, constant: 10),
+            label.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
+            label.heightAnchor.constraint(equalToConstant: 30),
+            
             // Collection view constraints
-            collectionView.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 10),
+            collectionView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10),
             collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: tabBar.topAnchor),
@@ -98,7 +113,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     // MARK: - UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 26 // Number of items
+        return 10 // Number of items
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -116,6 +131,20 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
             self?.disableScrollTimer = nil // Clean up timer reference
         }
     }
+    
+    // Detecting off-screen cells
+        func scrollViewDidScroll(_ scrollView: UIScrollView) {
+            let visibleIndexPaths = collectionView.indexPathsForVisibleItems
+            let totalItems = collectionView.numberOfItems(inSection: 0)
+            var allIndexPaths = [IndexPath]()
+            
+            for i in 0..<totalItems {
+                allIndexPaths.append(IndexPath(item: i, section: 0))
+            }
+            
+            let offScreenIndexPaths = allIndexPaths.filter { !visibleIndexPaths.contains($0) }
+            print("Off-screen cells: \(offScreenIndexPaths.map { $0.row })")
+        }
         
     // MARK: - UICollectionViewDelegate
 

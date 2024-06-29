@@ -11,8 +11,8 @@ class CustomCollectionViewCell: UICollectionViewCell {
         return label
     }()
     
-    let customView: PKCanvasView = {
-        var view = PKCanvasView()
+    let customView: CustomCanvasView = {
+        var view = CustomCanvasView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
         view.minimumZoomScale = 1.0
@@ -49,3 +49,59 @@ class CustomCollectionViewCell: UICollectionViewCell {
     }
 }
 
+class CustomCanvasView: PKCanvasView {
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event)
+        if let touch = touches.first {
+            let location = touch.location(in: self)
+            print("Touch began at: \(location)")
+        }
+    }
+
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesMoved(touches, with: event)
+        if let touch = touches.first {
+            let location = touch.location(in: self)
+            print("Touch moved to: \(location)")
+        }
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesEnded(touches, with: event)
+        if let touch = touches.first {
+            let location = touch.location(in: self)
+            print("Touch ended at: \(location)")
+        }
+    }
+
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesCancelled(touches, with: event)
+        if let touch = touches.first {
+            let location = touch.location(in: self)
+            print("Touch cancelled at: \(location)")
+        }
+    }
+    
+    func addStroke(at points: [CGPoint], with color: UIColor = .black, width: CGFloat = 5.0) {
+            let newStroke = createStroke(at: points, with: color, width: width)
+            var currentDrawing = self.drawing
+            currentDrawing.strokes.append(newStroke)
+            self.drawing = currentDrawing
+    }
+    
+    func createStroke(at points: [CGPoint], with color: UIColor = .black, width: CGFloat = 5.0) -> PKStroke {
+        let ink = PKInk(.pen, color: color)
+        var controlPoints = [PKStrokePoint]()
+
+        for point in points {
+            let strokePoint = PKStrokePoint(location: point, timeOffset: 0, size: CGSize(width: width, height: width), opacity: 1.0, force: 1.0, azimuth: 0, altitude: 0)
+            controlPoints.append(strokePoint)
+        }
+
+        let path = PKStrokePath(controlPoints: controlPoints, creationDate: Date())
+        let stroke = PKStroke(ink: ink, path: path, transform: .identity, mask: nil)
+
+        return stroke
+    }
+    
+}
