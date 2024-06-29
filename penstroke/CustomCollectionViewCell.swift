@@ -54,6 +54,7 @@ class CustomCanvasView: PKCanvasView {
         super.touchesBegan(touches, with: event)
         if let touch = touches.first {
             let location = touch.location(in: self)
+            print("tag: \(self.tag)")
             print("Touch began at: \(location)")
         }
     }

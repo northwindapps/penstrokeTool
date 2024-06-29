@@ -138,6 +138,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "customCell", for: indexPath) as! CustomCollectionViewCell
         cell.backgroundColor = .clear
         cell.label.text = "Item \(indexPath.row)"
+        cell.customView.tag = indexPath.row
         // Custom view can be configured here if needed
         return cell
     }
