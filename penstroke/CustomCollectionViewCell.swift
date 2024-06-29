@@ -50,12 +50,19 @@ class CustomCollectionViewCell: UICollectionViewCell {
 }
 
 class CustomCanvasView: PKCanvasView {
+    var startTime: TimeInterval = 0
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
         if let touch = touches.first {
             let location = touch.location(in: self)
+            let timestamp = touch.timestamp
+            if startTime == 0 {
+                startTime = timestamp // set the start time to the timestamp of the first touch
+            }
+            let relativeTimestamp = (timestamp - startTime) * 1000 // convert to milliseconds
             print("tag: \(self.tag)")
-            print("Touch began at: \(location)")
+            print("Touch began at: \(location), timestamp: \(relativeTimestamp) ms")
         }
     }
 
@@ -63,7 +70,9 @@ class CustomCanvasView: PKCanvasView {
         super.touchesMoved(touches, with: event)
         if let touch = touches.first {
             let location = touch.location(in: self)
-            print("Touch moved to: \(location)")
+            let timestamp = touch.timestamp
+            let relativeTimestamp = (timestamp - startTime) * 1000 // convert to milliseconds
+            print("Touch moved to: \(location), timestamp: \(relativeTimestamp) ms")
         }
     }
 
@@ -71,7 +80,9 @@ class CustomCanvasView: PKCanvasView {
         super.touchesEnded(touches, with: event)
         if let touch = touches.first {
             let location = touch.location(in: self)
-            print("Touch ended at: \(location)")
+            let timestamp = touch.timestamp
+            let relativeTimestamp = (timestamp - startTime) * 1000 // convert to milliseconds
+            print("Touch ended at: \(location), timestamp: \(relativeTimestamp) ms")
         }
     }
 
