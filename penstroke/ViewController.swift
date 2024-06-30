@@ -128,6 +128,26 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     
     @objc func buttonTapped() {
         print("Add to the list")
+        let numberOfItems = collectionView.numberOfItems(inSection: 0)
+        var indexPaths: [IndexPath] = []
+
+        for row in 0..<numberOfItems {
+            let indexPath = IndexPath(row: row, section: 0)
+            indexPaths.append(indexPath)
+        }
+
+        // Print or use the indexPaths array
+        //print(indexPaths)
+        
+        for idx in indexPaths{
+            if let cell = collectionView.cellForItem(at: idx) as? CustomCollectionViewCell {
+                let customView = cell.customView
+                // Handle customView here
+                print(customView.copyDataManager().timeStamps)
+                print(customView.copyDataManager().sample_tags)
+            }
+        }
+        
         
     }
     
@@ -169,12 +189,12 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     
     @objc func buttonTapped2(sender: UIButton) {
         let indexPath = IndexPath(row: sender.tag, section: 0)
-            if let cell = collectionView.cellForItem(at: indexPath) as? CustomCollectionViewCell {
-                let customView = cell.customView
-                // Handle customView here
-                print(customView)
-                customView.drawing = PKDrawing()
-            }
+        if let cell = collectionView.cellForItem(at: indexPath) as? CustomCollectionViewCell {
+            let customView = cell.customView
+            // Handle customView here
+            print(customView)
+            customView.drawing = PKDrawing()
+        }
     }
     
     func startDisableScrollTimer() {

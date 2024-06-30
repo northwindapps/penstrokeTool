@@ -168,4 +168,8 @@ class CustomCanvasView: PKCanvasView {
         self.annotation = annotation
     }
     
+    func copyDataManager() -> DataManagerProtocol{
+        return dataManager
+    }
+    
 }
