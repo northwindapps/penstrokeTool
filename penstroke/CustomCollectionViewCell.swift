@@ -13,7 +13,8 @@ class CustomCollectionViewCell: UICollectionViewCell {
     }()
     
     let customView: CustomCanvasView = {
-        let view = CustomCanvasView()
+        let sharedDataManager = SharedDataManager()
+        let view = CustomCanvasView(dataManager: sharedDataManager)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
         view.minimumZoomScale = 1.0
@@ -23,6 +24,7 @@ class CustomCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
+    // Initializer with annotation parameter
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(button)
@@ -52,6 +54,19 @@ class CustomCollectionViewCell: UICollectionViewCell {
 }
 class CustomCanvasView: PKCanvasView {
     var startTime: TimeInterval = 0
+    private var dataManager: DataManagerProtocol
+    private var annotation: String
+
+    // Dependency Injection through initializer
+    init(dataManager: DataManagerProtocol,annotation: String = "") {
+        self.dataManager = dataManager
+        self.annotation = annotation
+        super.init(frame: .zero)
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
@@ -64,7 +79,15 @@ class CustomCanvasView: PKCanvasView {
             let relativeTimestamp = (timestamp - startTime) * 1000 // convert to milliseconds
             print("tag: \(self.tag)")
             print("Touch began at: \(location), timestamp: \(relativeTimestamp) ms")
-        }
+            
+            //
+            dataManager.timeStamps.append(String(relativeTimestamp))
+            dataManager.events.append("start")
+            dataManager.sample_tags.append(String(self.tag))
+            dataManager.x_cordinates.append("\(location.x)")
+            dataManager.x_cordinates.append("\(location.y)")
+
+}
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -115,6 +138,11 @@ class CustomCanvasView: PKCanvasView {
         let stroke = PKStroke(ink: ink, path: path, transform: .identity, mask: nil)
 
         return stroke
+    }
+    
+    // Configure method to set annotation
+    func configure(withAnnotation annotation: String) {
+        self.annotation = annotation
     }
     
 }

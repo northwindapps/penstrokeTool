@@ -108,7 +108,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     }
     
     @objc func buttonTapped() {
-        print("Button tapped!")
+        print("Add to the list")
         // Handle button tap action here
     }
     
@@ -141,6 +141,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         cell.button.setTitle("Item \(indexPath.row)", for: .normal)
         cell.button.tag = indexPath.row
         cell.customView.tag = indexPath.row
+        cell.customView.configure(withAnnotation: textField.text ?? "")
         // Custom view can be configured here if needed
         cell.button.addTarget(self, action: #selector(buttonTapped2), for: .touchUpInside)
         return cell
