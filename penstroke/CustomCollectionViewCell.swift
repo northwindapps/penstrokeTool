@@ -83,10 +83,12 @@ class CustomCanvasView: PKCanvasView {
             //store data
             dataManager.timeStamps.append(String(relativeTimestamp))
             dataManager.events.append("start")
-            dataManager.annotation.append(annotation)
+            dataManager.annotations.append(annotation)
             dataManager.sample_tags.append(String(self.tag))
             dataManager.x_cordinates.append("\(location.x)")
             dataManager.x_cordinates.append("\(location.y)")
+            dataManager.frame_widths.append("\(self.frame.width)")
+            dataManager.frame_heights.append("\(self.frame.height)")
 
         }
     }
@@ -102,10 +104,12 @@ class CustomCanvasView: PKCanvasView {
             //store data
             dataManager.timeStamps.append(String(relativeTimestamp))
             dataManager.events.append("move")
-            dataManager.annotation.append(annotation)
+            dataManager.annotations.append(annotation)
             dataManager.sample_tags.append(String(self.tag))
             dataManager.x_cordinates.append("\(location.x)")
             dataManager.x_cordinates.append("\(location.y)")
+            dataManager.frame_widths.append("\(self.frame.width)")
+            dataManager.frame_heights.append("\(self.frame.height)")
         }
     }
 
@@ -120,10 +124,12 @@ class CustomCanvasView: PKCanvasView {
             //store data
             dataManager.timeStamps.append(String(relativeTimestamp))
             dataManager.events.append("end")
-            dataManager.annotation.append(annotation)
+            dataManager.annotations.append(annotation)
             dataManager.sample_tags.append(String(self.tag))
             dataManager.x_cordinates.append("\(location.x)")
             dataManager.x_cordinates.append("\(location.y)")
+            dataManager.frame_widths.append("\(self.frame.width)")
+            dataManager.frame_heights.append("\(self.frame.height)")
         }
     }
 

@@ -128,7 +128,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     
     @objc func buttonTapped() {
         print("Add to the list")
-        // Handle button tap action here
+        
     }
     
     @objc func handleTapGesture(_ gesture: UITapGestureRecognizer) {
@@ -159,6 +159,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         cell.backgroundColor = .clear
         cell.button.setTitle("Item \(indexPath.row)", for: .normal)
         cell.button.tag = indexPath.row
+        cell.customView.drawing = PKDrawing()
         cell.customView.tag = indexPath.row
         cell.customView.configure(withAnnotation: textField.text ?? "")
         // Custom view can be configured here if needed
@@ -185,18 +186,18 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     }
     
     // Detecting off-screen cells
-        func scrollViewDidScroll(_ scrollView: UIScrollView) {
-            let visibleIndexPaths = collectionView.indexPathsForVisibleItems
-            let totalItems = collectionView.numberOfItems(inSection: 0)
-            var allIndexPaths = [IndexPath]()
-            
-            for i in 0..<totalItems {
-                allIndexPaths.append(IndexPath(item: i, section: 0))
-            }
-            
-            let offScreenIndexPaths = allIndexPaths.filter { !visibleIndexPaths.contains($0) }
-            //print("Off-screen cells: \(offScreenIndexPaths.map { $0.row })")
-        }
+//        func scrollViewDidScroll(_ scrollView: UIScrollView) {
+//            let visibleIndexPaths = collectionView.indexPathsForVisibleItems
+//            let totalItems = collectionView.numberOfItems(inSection: 0)
+//            var allIndexPaths = [IndexPath]()
+//            
+//            for i in 0..<totalItems {
+//                allIndexPaths.append(IndexPath(item: i, section: 0))
+//            }
+//            
+//            let offScreenIndexPaths = allIndexPaths.filter { !visibleIndexPaths.contains($0) }
+//            //print("Off-screen cells: \(offScreenIndexPaths.map { $0.row })")
+//        }
         
     // MARK: - UICollectionViewDelegate
 
