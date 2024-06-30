@@ -3,16 +3,17 @@ import PencilKit
 
 class CustomCollectionViewCell: UICollectionViewCell {
     
-    let label: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.textColor = .black
-        return label
+    let button: UIButton = {
+        let button = UIButton()
+        button.translatesAutoresizingMaskIntoConstraints = false
+        button.setTitle("Button", for: .normal)
+        button.titleLabel?.textAlignment = .center
+        button.setTitleColor(.black, for: .normal)
+        return button
     }()
     
     let customView: CustomCanvasView = {
-        var view = CustomCanvasView()
+        let view = CustomCanvasView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .clear
         view.minimumZoomScale = 1.0
@@ -24,31 +25,31 @@ class CustomCollectionViewCell: UICollectionViewCell {
     
     override init(frame: CGRect) {
         super.init(frame: frame)
-        contentView.addSubview(label)
+        contentView.addSubview(button)
         contentView.addSubview(customView)
         
-        // Set up constraints for the label
+        // Set up constraints for the button
         NSLayoutConstraint.activate([
-            label.topAnchor.constraint(equalTo: contentView.topAnchor),
-            label.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            label.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            label.heightAnchor.constraint(equalToConstant: 20)
+            button.topAnchor.constraint(equalTo: contentView.topAnchor),
+            button.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            button.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            button.heightAnchor.constraint(equalToConstant: 20)
         ])
         
         // Set up constraints for the custom view
         NSLayoutConstraint.activate([
-            customView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10),
-            customView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
-            customView.widthAnchor.constraint(equalToConstant: 150),
-            customView.heightAnchor.constraint(equalToConstant: 150)
+            customView.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 10),
+            customView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            customView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            customView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
+        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
-
 class CustomCanvasView: PKCanvasView {
     var startTime: TimeInterval = 0
 

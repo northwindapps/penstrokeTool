@@ -1,4 +1,5 @@
 import UIKit
+import PencilKit
 
 class ViewController: BaseController, UICollectionViewDataSource, UICollectionViewDelegate, UITabBarDelegate {
 
@@ -137,10 +138,22 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "customCell", for: indexPath) as! CustomCollectionViewCell
         cell.backgroundColor = .clear
-        cell.label.text = "Item \(indexPath.row)"
+        cell.button.setTitle("Item \(indexPath.row)", for: .normal)
+        cell.button.tag = indexPath.row
         cell.customView.tag = indexPath.row
         // Custom view can be configured here if needed
+        cell.button.addTarget(self, action: #selector(buttonTapped2), for: .touchUpInside)
         return cell
+    }
+    
+    @objc func buttonTapped2(sender: UIButton) {
+        let indexPath = IndexPath(row: sender.tag, section: 0)
+            if let cell = collectionView.cellForItem(at: indexPath) as? CustomCollectionViewCell {
+                let customView = cell.customView
+                // Handle customView here
+                print(customView)
+                customView.drawing = PKDrawing()
+            }
     }
     
     func startDisableScrollTimer() {
@@ -162,7 +175,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
             }
             
             let offScreenIndexPaths = allIndexPaths.filter { !visibleIndexPaths.contains($0) }
-            print("Off-screen cells: \(offScreenIndexPaths.map { $0.row })")
+            //print("Off-screen cells: \(offScreenIndexPaths.map { $0.row })")
         }
         
     // MARK: - UICollectionViewDelegate
