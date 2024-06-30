@@ -80,14 +80,15 @@ class CustomCanvasView: PKCanvasView {
             print("tag: \(self.tag)")
             print("Touch began at: \(location), timestamp: \(relativeTimestamp) ms")
             
-            //
+            //store data
             dataManager.timeStamps.append(String(relativeTimestamp))
             dataManager.events.append("start")
+            dataManager.annotation.append(annotation)
             dataManager.sample_tags.append(String(self.tag))
             dataManager.x_cordinates.append("\(location.x)")
             dataManager.x_cordinates.append("\(location.y)")
 
-}
+        }
     }
 
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -97,6 +98,14 @@ class CustomCanvasView: PKCanvasView {
             let timestamp = touch.timestamp
             let relativeTimestamp = (timestamp - startTime) * 1000 // convert to milliseconds
             print("Touch moved to: \(location), timestamp: \(relativeTimestamp) ms")
+            
+            //store data
+            dataManager.timeStamps.append(String(relativeTimestamp))
+            dataManager.events.append("move")
+            dataManager.annotation.append(annotation)
+            dataManager.sample_tags.append(String(self.tag))
+            dataManager.x_cordinates.append("\(location.x)")
+            dataManager.x_cordinates.append("\(location.y)")
         }
     }
 
@@ -107,6 +116,14 @@ class CustomCanvasView: PKCanvasView {
             let timestamp = touch.timestamp
             let relativeTimestamp = (timestamp - startTime) * 1000 // convert to milliseconds
             print("Touch ended at: \(location), timestamp: \(relativeTimestamp) ms")
+            
+            //store data
+            dataManager.timeStamps.append(String(relativeTimestamp))
+            dataManager.events.append("end")
+            dataManager.annotation.append(annotation)
+            dataManager.sample_tags.append(String(self.tag))
+            dataManager.x_cordinates.append("\(location.x)")
+            dataManager.x_cordinates.append("\(location.y)")
         }
     }
 

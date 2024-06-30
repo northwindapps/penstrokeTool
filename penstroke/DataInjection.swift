@@ -12,7 +12,7 @@ protocol DataManagerProtocol {
     var events: [String] { get set }
     var x_cordinates: [String] { get set }
     var y_cordinates: [String] { get set }
-    var annotation: String { get set }
+    var annotation: [String] { get set }
     var sample_tags: [String] { get set }
 }
 
@@ -21,6 +21,6 @@ class SharedDataManager: DataManagerProtocol {
     var events: [String] = [] // start, move, end
     var x_cordinates: [String] = []
     var y_cordinates: [String] = []
-    var annotation: String = ""
+    var annotation: [String] = []
     var sample_tags: [String] = []
 }

@@ -1,7 +1,7 @@
 import UIKit
 import PencilKit
 
-class ViewController: BaseController, UICollectionViewDataSource, UICollectionViewDelegate, UITabBarDelegate {
+class ViewController: BaseController, UICollectionViewDataSource, UICollectionViewDelegate, UITabBarDelegate, UITextFieldDelegate {
 
     var collectionView: UICollectionView!
     var tapGestureRecognizer: UITapGestureRecognizer!
@@ -18,7 +18,10 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.borderStyle = .roundedRect
-        textField.placeholder = "Enter text here"
+        textField.placeholder = "Enter any annotation letter here"
+        textField.delegate = self
+        // Add target for editing changes (optional)
+        textField.addTarget(self, action: #selector(textFieldDidChange(_:)), for: .editingChanged)
         
         // Initialize label
         label = UILabel()
@@ -105,6 +108,22 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
             tabBar.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             tabBar.heightAnchor.constraint(equalToConstant: 49) // Default height for UITabBar
         ])
+    }
+    
+    
+    // Function to handle text field changes
+    @objc func textFieldDidChange(_ textField: UITextField) {
+        // Handle text changes here
+        if let text = textField.text {
+            // Do something with the text, such as updating a model or UI
+            print("Text changed to: \(text)")
+            collectionView.reloadData()
+        }
+    }
+    
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()  // Dismiss keyboard
+        return true
     }
     
     @objc func buttonTapped() {
