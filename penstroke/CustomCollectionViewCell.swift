@@ -24,7 +24,6 @@ class CustomCollectionViewCell: UICollectionViewCell {
         return view
     }()
     
-    // Initializer with annotation parameter
     override init(frame: CGRect) {
         super.init(frame: frame)
         contentView.addSubview(button)
@@ -40,18 +39,18 @@ class CustomCollectionViewCell: UICollectionViewCell {
         
         // Set up constraints for the custom view
         NSLayoutConstraint.activate([
+            customView.widthAnchor.constraint(equalToConstant: 120),
+            customView.heightAnchor.constraint(equalToConstant: 120),
             customView.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 10),
-            customView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            customView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            customView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            customView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor) // Center horizontally within the cell
         ])
-        
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 }
+
 class CustomCanvasView: PKCanvasView {
     var startTime: TimeInterval = 0
     private var dataManager: DataManagerProtocol
