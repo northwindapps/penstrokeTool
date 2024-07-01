@@ -10,10 +10,12 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     var textField: UITextField!
     var label: UILabel!
     var button: UIButton!
+    var counter: Int!
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        counter = 0
         // Initialize text field
         textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -33,7 +35,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setTitle("Add to the list", for: .normal)
-        button.addTarget(self, action: #selector(buttonTapped), for: .touchUpInside)
+        button.addTarget(self, action: #selector(buttonAddToList), for: .touchUpInside)
         
         // Add text field, label, and button to view
         self.view.addSubview(textField)
@@ -126,7 +128,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         return true
     }
     
-    @objc func buttonTapped() {
+    @objc func buttonAddToList() {
         print("Add to the list")
         let numberOfItems = collectionView.numberOfItems(inSection: 0)
         var indexPaths: [IndexPath] = []
@@ -135,20 +137,30 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
             let indexPath = IndexPath(row: row, section: 0)
             indexPaths.append(indexPath)
         }
-
-        // Print or use the indexPaths array
-        //print(indexPaths)
         
         for idx in indexPaths{
             if let cell = collectionView.cellForItem(at: idx) as? CustomCollectionViewCell {
                 let customView = cell.customView
                 // Handle customView here
-                print(customView.copyDataManager().timeStamps)
-                print(customView.copyDataManager().sample_tags)
+                DataManagerRepository.shared.addDataManager(customView.copyDataManager() as! SharedDataManager)
             }
         }
         
+        let aggregatedData = DataManagerRepository.shared.sumAllData()
+        // Print aggregated data
+        print("Data Count: \(aggregatedData.timeStamps.count)")
+        print("Loop",counter as Any)
+
         
+        for idx in indexPaths{
+            if let cell = collectionView.cellForItem(at: idx) as? CustomCollectionViewCell {
+                let customView = cell.customView
+                customView.deleteData()
+                customView.drawing = PKDrawing()
+            }
+        }
+        
+        counter += 1
     }
     
     @objc func handleTapGesture(_ gesture: UITapGestureRecognizer) {
@@ -177,7 +189,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "customCell", for: indexPath) as! CustomCollectionViewCell
         cell.backgroundColor = .clear
-        cell.button.setTitle("Item \(indexPath.row)", for: .normal)
+        cell.button.setTitle("Reset Item \(indexPath.row)", for: .normal)
         cell.button.tag = indexPath.row
         cell.customView.drawing = PKDrawing()
         cell.customView.tag = indexPath.row
@@ -194,6 +206,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
             // Handle customView here
             print(customView)
             customView.drawing = PKDrawing()
+            customView.deleteData()
         }
     }
     

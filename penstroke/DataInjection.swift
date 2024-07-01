@@ -10,8 +10,8 @@ import Foundation
 protocol DataManagerProtocol {
     var timeStamps: [String] { get set }
     var events: [String] { get set }
-    var x_cordinates: [String] { get set }
-    var y_cordinates: [String] { get set }
+    var x_coordinates: [String] { get set }
+    var y_coordinates: [String] { get set }
     var annotations: [String] { get set }
     var sample_tags: [String] { get set }
     var frame_widths: [String] { get set }
@@ -21,13 +21,49 @@ protocol DataManagerProtocol {
 class SharedDataManager: DataManagerProtocol {
     var timeStamps: [String] = []
     var events: [String] = [] // start, move, end
-    var x_cordinates: [String] = []
-    var y_cordinates: [String] = []
+    var x_coordinates: [String] = []
+    var y_coordinates: [String] = []
     var annotations: [String] = []
     var sample_tags: [String] = []
     var frame_widths: [String] = []
     var frame_heights: [String] = []
 }
+
+class DataManagerRepository {
+    static let shared = DataManagerRepository()
+    private var dataManagers: [SharedDataManager] = []
+    
+    private init() {}
+    
+    func addDataManager(_ manager: SharedDataManager) {
+        dataManagers.append(manager)
+    }
+    
+    func sumAllData() -> (timeStamps: [String], events: [String], x_coordinates: [String], y_coordinates: [String], annotations: [String], sample_tags: [String], frame_widths: [String], frame_heights: [String]) {
+        var allTimeStamps: [String] = []
+        var allEvents: [String] = []
+        var allXCoordinates: [String] = []
+        var allYCoordinates: [String] = []
+        var allAnnotations: [String] = []
+        var allSampleTags: [String] = []
+        var allFrameWidths: [String] = []
+        var allFrameHeights: [String] = []
+        
+        for manager in dataManagers {
+            allTimeStamps.append(contentsOf: manager.timeStamps)
+            allEvents.append(contentsOf: manager.events)
+            allXCoordinates.append(contentsOf: manager.x_coordinates)
+            allYCoordinates.append(contentsOf: manager.y_coordinates)
+            allAnnotations.append(contentsOf: manager.annotations)
+            allSampleTags.append(contentsOf: manager.sample_tags)
+            allFrameWidths.append(contentsOf: manager.frame_widths)
+            allFrameHeights.append(contentsOf: manager.frame_heights)
+        }
+        
+        return (allTimeStamps, allEvents, allXCoordinates, allYCoordinates, allAnnotations, allSampleTags, allFrameWidths, allFrameHeights)
+    }
+}
+
 
 //output json format
 //{

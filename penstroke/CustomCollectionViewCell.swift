@@ -77,16 +77,16 @@ class CustomCanvasView: PKCanvasView {
                 startTime = timestamp // set the start time to the timestamp of the first touch
             }
             let relativeTimestamp = (timestamp - startTime) * 1000 // convert to milliseconds
-            print("tag: \(self.tag)")
-            print("Touch began at: \(location), timestamp: \(relativeTimestamp) ms")
+            //print("tag: \(self.tag)")
+            //print("Touch began at: \(location), timestamp: \(relativeTimestamp) ms")
             
             //store data
             dataManager.timeStamps.append(String(relativeTimestamp))
             dataManager.events.append("start")
             dataManager.annotations.append(annotation)
             dataManager.sample_tags.append(String(self.tag))
-            dataManager.x_cordinates.append("\(location.x)")
-            dataManager.x_cordinates.append("\(location.y)")
+            dataManager.x_coordinates.append("\(location.x)")
+            dataManager.y_coordinates.append("\(location.y)")
             dataManager.frame_widths.append("\(self.frame.width)")
             dataManager.frame_heights.append("\(self.frame.height)")
 
@@ -99,15 +99,15 @@ class CustomCanvasView: PKCanvasView {
             let location = touch.location(in: self)
             let timestamp = touch.timestamp
             let relativeTimestamp = (timestamp - startTime) * 1000 // convert to milliseconds
-            print("Touch moved to: \(location), timestamp: \(relativeTimestamp) ms")
+            //print("Touch moved to: \(location), timestamp: \(relativeTimestamp) ms")
             
             //store data
             dataManager.timeStamps.append(String(relativeTimestamp))
             dataManager.events.append("move")
             dataManager.annotations.append(annotation)
             dataManager.sample_tags.append(String(self.tag))
-            dataManager.x_cordinates.append("\(location.x)")
-            dataManager.x_cordinates.append("\(location.y)")
+            dataManager.x_coordinates.append("\(location.x)")
+            dataManager.y_coordinates.append("\(location.y)")
             dataManager.frame_widths.append("\(self.frame.width)")
             dataManager.frame_heights.append("\(self.frame.height)")
         }
@@ -119,15 +119,15 @@ class CustomCanvasView: PKCanvasView {
             let location = touch.location(in: self)
             let timestamp = touch.timestamp
             let relativeTimestamp = (timestamp - startTime) * 1000 // convert to milliseconds
-            print("Touch ended at: \(location), timestamp: \(relativeTimestamp) ms")
+            //print("Touch ended at: \(location), timestamp: \(relativeTimestamp) ms")
             
             //store data
             dataManager.timeStamps.append(String(relativeTimestamp))
             dataManager.events.append("end")
             dataManager.annotations.append(annotation)
             dataManager.sample_tags.append(String(self.tag))
-            dataManager.x_cordinates.append("\(location.x)")
-            dataManager.x_cordinates.append("\(location.y)")
+            dataManager.x_coordinates.append("\(location.x)")
+            dataManager.y_coordinates.append("\(location.y)")
             dataManager.frame_widths.append("\(self.frame.width)")
             dataManager.frame_heights.append("\(self.frame.height)")
         }
@@ -137,7 +137,7 @@ class CustomCanvasView: PKCanvasView {
         super.touchesCancelled(touches, with: event)
         if let touch = touches.first {
             let location = touch.location(in: self)
-            print("Touch cancelled at: \(location)")
+            //print("Touch cancelled at: \(location)")
         }
     }
     
@@ -168,8 +168,29 @@ class CustomCanvasView: PKCanvasView {
         self.annotation = annotation
     }
     
-    func copyDataManager() -> DataManagerProtocol{
-        return dataManager
+    func copyDataManager() -> DataManagerProtocol {
+        let copy = SharedDataManager()
+        copy.timeStamps = self.dataManager.timeStamps
+        copy.events = self.dataManager.events
+        copy.x_coordinates = self.dataManager.x_coordinates
+        copy.y_coordinates = self.dataManager.y_coordinates
+        copy.annotations = self.dataManager.annotations
+        copy.sample_tags = self.dataManager.sample_tags
+        copy.frame_widths = self.dataManager.frame_widths
+        copy.frame_heights = self.dataManager.frame_heights
+        return copy
+    }
+    
+    func deleteData(){
+        //store data
+        dataManager.timeStamps.removeAll()
+        dataManager.events.removeAll()
+        dataManager.annotations.removeAll()
+        dataManager.sample_tags.removeAll()
+        dataManager.x_coordinates.removeAll()
+        dataManager.y_coordinates.removeAll()
+        dataManager.frame_widths.removeAll()
+        dataManager.frame_heights.removeAll()
     }
     
 }
