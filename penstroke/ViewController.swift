@@ -1,7 +1,8 @@
 import UIKit
 import PencilKit
+import MessageUI
 
-class ViewController: BaseController, UICollectionViewDataSource, UICollectionViewDelegate, UITabBarDelegate, UITextFieldDelegate {
+class ViewController: BaseController, UICollectionViewDataSource, UICollectionViewDelegate, UITabBarDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate{
 
     var collectionView: UICollectionView!
     var tapGestureRecognizer: UITapGestureRecognizer!
@@ -188,8 +189,9 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         print("Selected item: \(item.tag)")
         if counter > 0{
-            let csvString = createCSV()
-            saveCSV(csvString: csvString, fileName: "data.csv")
+            //let csvString = createCSV()
+            //saveCSV(csvString: csvString, fileName: "data.csv")
+            sendMail()
         }
 
     }
@@ -238,6 +240,34 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         } catch {
             print("Failed to save CSV: \(error)")
         }
+    }
+    
+    func sendMail() {
+        if MFMailComposeViewController.canSendMail() {
+            let today: Date = Date()
+            let dateFormatter: DateFormatter = DateFormatter()
+            dateFormatter.dateFormat = "MM-dd-yyyy HH:mm"
+            var date = dateFormatter.string(from: today)
+
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+
+            mail.setSubject("from ios")
+            
+            let csvString = createCSV()
+            guard let csvData = csvString.data(using: .utf8) else {
+                print("Failed to convert CSV string to Data")
+                return
+            }
+
+            mail.addAttachmentData(csvData, mimeType: "text/csv", fileName: date + ".csv")
+
+            present(mail, animated: true, completion: nil)
+        }
+    }
+    
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true, completion: nil)
     }
 
     // MARK: - UICollectionViewDataSource
