@@ -47,7 +47,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         
         // Initialize layout
         let layout = UICollectionViewFlowLayout()
-        layout.itemSize = CGSize(width: 180, height: 180)  // Adjust height for custom view
+        layout.itemSize = CGSize(width: 140, height: 140)  // Adjust height for custom view
        
         // Initialize collection view
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -187,7 +187,57 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     // UITabBarDelegate method
     func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         print("Selected item: \(item.tag)")
-        // Handle tab bar item selection
+        if counter > 0{
+            let csvString = createCSV()
+            saveCSV(csvString: csvString, fileName: "data.csv")
+        }
+
+    }
+    
+    func createCSV() -> String {
+        let numberOfItems = collectionView.numberOfItems(inSection: 0)
+        var indexPaths: [IndexPath] = []
+        
+        for row in 0..<numberOfItems {
+            let indexPath = IndexPath(row: row, section: 0)
+            indexPaths.append(indexPath)
+        }
+        
+        for idx in indexPaths{
+            if let cell = collectionView.cellForItem(at: idx) as? CustomCollectionViewCell {
+                let customView = cell.customView
+                // Handle customView here
+                DataManagerRepository.shared.addDataManager(customView.copyDataManager() as! SharedDataManager)
+            }
+        }
+        
+        let aggregatedData = DataManagerRepository.shared.sumAllData()
+        // Print aggregated data
+        print("Data Count: \(aggregatedData.timeStamps.count)")
+        print("Conter",String(counter))
+        
+        
+        var csvString = "Timestamp,Event,X,Y,Annotation,SampleTag,FrameWidth,FrameHeight\n"
+        
+        for i in 0..<aggregatedData.timeStamps.count {
+            let row = "\(aggregatedData.timeStamps[i]),\(aggregatedData.events[i]),\(aggregatedData.x_coordinates[i]),\(aggregatedData.y_coordinates[i]),\(aggregatedData.annotations[i]),\(aggregatedData.sample_tags[i]),\(aggregatedData.frame_widths[i]),\(aggregatedData.frame_heights[i])\n"
+            csvString.append(row)
+        }
+        return csvString
+    }
+    
+    func saveCSV(csvString: String, fileName: String) {
+        let fileManager = FileManager.default
+        let paths = fileManager.urls(for: .documentDirectory, in: .userDomainMask)
+        let documentsDirectory = paths[0]
+        let fileURL = documentsDirectory.appendingPathComponent(fileName)
+        
+        do {
+            try csvString.write(to: fileURL, atomically: true, encoding: .utf8)
+            print("CSV saved successfully at \(fileURL)")
+        } catch {
+            print("Failed to save CSV: \(error)")
+        }
     }
 
     // MARK: - UICollectionViewDataSource
