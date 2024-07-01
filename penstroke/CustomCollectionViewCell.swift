@@ -69,6 +69,7 @@ class CustomCanvasView: PKCanvasView {
 
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
+        startTime = 0
         if let touch = touches.first {
             let location = touch.location(in: self)
             let timestamp = touch.timestamp

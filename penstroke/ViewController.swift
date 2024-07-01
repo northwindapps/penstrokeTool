@@ -252,7 +252,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
             let mail = MFMailComposeViewController()
             mail.mailComposeDelegate = self
 
-            mail.setSubject("from ios")
+            mail.setSubject("pen-stroke-data")
             
             let csvString = createCSV()
             guard let csvData = csvString.data(using: .utf8) else {
