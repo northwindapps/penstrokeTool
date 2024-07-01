@@ -30,7 +30,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         // Initialize label
         label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "cnt:0"
+        label.text = "Item cnt:0"
         label.textAlignment = .center
         
         // Initialize button
@@ -132,6 +132,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     
     @objc func buttonAddToList() {
         print("Add to the list")
+        
         let numberOfItems = collectionView.numberOfItems(inSection: 0)
         var indexPaths: [IndexPath] = []
 
@@ -142,6 +143,10 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         
         for idx in indexPaths{
             if let cell = collectionView.cellForItem(at: idx) as? CustomCollectionViewCell {
+                if cell.customView.drawing.strokes.isEmpty {
+                    print("error some canvas are empty.")
+                    return
+                }
                 let customView = cell.customView
                 // Handle customView here
                 DataManagerRepository.shared.addDataManager(customView.copyDataManager() as! SharedDataManager)
@@ -162,8 +167,10 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
             }
         }
         
+      
         counter += 1
-        label.text = "cnt:" + String(10*counter)
+        label.text = "Item cnt:" + String(10*counter)
+        
     }
     
     @objc func handleTapGesture(_ gesture: UITapGestureRecognizer) {
