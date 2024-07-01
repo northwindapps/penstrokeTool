@@ -20,6 +20,8 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.borderStyle = .roundedRect
+        textField.autocorrectionType = .no          
+        textField.smartInsertDeleteType = .no
         textField.placeholder = "Enter any annotation letter here"
         textField.delegate = self
         // Add target for editing changes (optional)
@@ -28,7 +30,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         // Initialize label
         label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.text = "Label below text field"
+        label.text = "cnt:0"
         label.textAlignment = .center
         
         // Initialize button
@@ -72,8 +74,8 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         tabBar = UITabBar()
         tabBar.translatesAutoresizingMaskIntoConstraints = false
         let tabBarItem1 = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
-        let tabBarItem2 = UITabBarItem(tabBarSystemItem: .contacts, tag: 1)
-        tabBar.items = [tabBarItem1, tabBarItem2]
+        //let tabBarItem2 = UITabBarItem(tabBarSystemItem: .contacts, tag: 1)
+        tabBar.items = [tabBarItem1]
         tabBar.delegate = self // Set the delegate
         
         // Add tab bar to view
@@ -161,6 +163,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         }
         
         counter += 1
+        label.text = "cnt:" + String(10*counter)
     }
     
     @objc func handleTapGesture(_ gesture: UITapGestureRecognizer) {
@@ -195,16 +198,15 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         cell.customView.tag = indexPath.row
         cell.customView.configure(withAnnotation: textField.text ?? "")
         // Custom view can be configured here if needed
-        cell.button.addTarget(self, action: #selector(buttonTapped2), for: .touchUpInside)
+        cell.button.addTarget(self, action: #selector(buttonClearView), for: .touchUpInside)
         return cell
     }
     
-    @objc func buttonTapped2(sender: UIButton) {
+    @objc func buttonClearView(sender: UIButton) {
         let indexPath = IndexPath(row: sender.tag, section: 0)
         if let cell = collectionView.cellForItem(at: indexPath) as? CustomCollectionViewCell {
             let customView = cell.customView
             // Handle customView here
-            print(customView)
             customView.drawing = PKDrawing()
             customView.deleteData()
         }
