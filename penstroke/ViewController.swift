@@ -73,10 +73,10 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         // Initialize tab bar
         tabBar = UITabBar()
         tabBar.translatesAutoresizingMaskIntoConstraints = false
-        let tabBarItem1 = UITabBarItem(tabBarSystemItem: .favorites, tag: 0)
-        //let tabBarItem2 = UITabBarItem(tabBarSystemItem: .contacts, tag: 1)
+        let exportIcon = UIImage(systemName: "square.and.arrow.up")
+        let tabBarItem1 = UITabBarItem(title: "Export", image: exportIcon, tag: 0)
         tabBar.items = [tabBarItem1]
-        tabBar.delegate = self // Set the delegate
+        tabBar.delegate = self
         
         // Add tab bar to view
         self.view.addSubview(tabBar)
