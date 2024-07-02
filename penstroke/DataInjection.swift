@@ -29,6 +29,17 @@ class SharedDataManager: DataManagerProtocol {
     var frame_heights: [String] = []
 }
 
+struct DataEntry: Codable {
+    var timeStamps: [String]
+    var events: [String]
+    var xCoordinates: [String]
+    var yCoordinates: [String]
+    var annotation: String
+    var sampleTag: String
+    var frameWidth: String
+    var frameHeight: String
+}
+
 class DataManagerRepository {
     static let shared = DataManagerRepository()
     private var dataManagers: [SharedDataManager] = []
@@ -39,28 +50,24 @@ class DataManagerRepository {
         dataManagers.append(manager)
     }
     
-    func sumAllData() -> (timeStamps: [String], events: [String], x_coordinates: [String], y_coordinates: [String], annotations: [String], sample_tags: [String], frame_widths: [String], frame_heights: [String]) {
-        var allTimeStamps: [String] = []
-        var allEvents: [String] = []
-        var allXCoordinates: [String] = []
-        var allYCoordinates: [String] = []
-        var allAnnotations: [String] = []
-        var allSampleTags: [String] = []
-        var allFrameWidths: [String] = []
-        var allFrameHeights: [String] = []
+    func sumAllData() -> [DataEntry] {
+        var dataArray: [DataEntry] = []
         
         for manager in dataManagers {
-            allTimeStamps.append(contentsOf: manager.timeStamps)
-            allEvents.append(contentsOf: manager.events)
-            allXCoordinates.append(contentsOf: manager.x_coordinates)
-            allYCoordinates.append(contentsOf: manager.y_coordinates)
-            allAnnotations.append(contentsOf: manager.annotations)
-            allSampleTags.append(contentsOf: manager.sample_tags)
-            allFrameWidths.append(contentsOf: manager.frame_widths)
-            allFrameHeights.append(contentsOf: manager.frame_heights)
+            let entry = DataEntry(
+                timeStamps: manager.timeStamps,
+                events: manager.events,
+                xCoordinates: manager.x_coordinates,
+                yCoordinates: manager.y_coordinates,
+                annotation: manager.annotations.first ?? "",
+                sampleTag: manager.sample_tags.first ?? "",
+                frameWidth: manager.frame_widths.first ?? "",
+                frameHeight: manager.frame_heights.first ?? ""
+            )
+            dataArray.append(entry)
         }
         
-        return (allTimeStamps, allEvents, allXCoordinates, allYCoordinates, allAnnotations, allSampleTags, allFrameWidths, allFrameHeights)
+        return dataArray
     }
 }
 

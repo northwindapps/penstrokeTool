@@ -156,7 +156,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         
         let aggregatedData = DataManagerRepository.shared.sumAllData()
         // Print aggregated data
-        print("Data Count: \(aggregatedData.timeStamps.count)")
+        print("Data Count: \(aggregatedData.count)")
         print("Loop",counter as Any)
 
         
@@ -196,7 +196,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
 
     }
     
-    func createCSV() -> String {
+    func createJSON() -> Data?{
         let numberOfItems = collectionView.numberOfItems(inSection: 0)
         var indexPaths: [IndexPath] = []
         
@@ -213,19 +213,29 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
             }
         }
         
-        let aggregatedData = DataManagerRepository.shared.sumAllData()
+        let jsonAry = DataManagerRepository.shared.sumAllData()
         // Print aggregated data
-        print("Data Count: \(aggregatedData.timeStamps.count)")
+        print("Data Count: \(jsonAry.count)")
         print("Conter",String(counter))
         
         
-        var csvString = "Timestamp,Event,X,Y,Annotation,SampleTag,FrameWidth,FrameHeight\n"
         
-        for i in 0..<aggregatedData.timeStamps.count {
-            let row = "\(aggregatedData.timeStamps[i]),\(aggregatedData.events[i]),\(aggregatedData.x_coordinates[i]),\(aggregatedData.y_coordinates[i]),\(aggregatedData.annotations[i]),\(aggregatedData.sample_tags[i]),\(aggregatedData.frame_widths[i]),\(aggregatedData.frame_heights[i])\n"
-            csvString.append(row)
+        // Convert the dictionary to JSON
+        do {
+            let encoder = JSONEncoder()
+            encoder.outputFormatting = .prettyPrinted // Optional, for readability
+            let jsonData = try encoder.encode(jsonAry)
+            
+            // Convert JSON data to a string
+            if let jsonString = String(data: jsonData, encoding: .utf8) {
+                print(jsonString)
+                return jsonData
+            }
+        } catch {
+            print("Failed to encode data: \(error)")
         }
-        return csvString
+        
+        return nil
     }
     
     func saveCSV(csvString: String, fileName: String) {
@@ -254,13 +264,12 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
 
             mail.setSubject("pen-stroke-data")
             
-            let csvString = createCSV()
-            guard let csvData = csvString.data(using: .utf8) else {
-                print("Failed to convert CSV string to Data")
+            let jsonData = createJSON()//createCSV()
+            
+            if jsonData == nil{
                 return
             }
-
-            mail.addAttachmentData(csvData, mimeType: "text/csv", fileName: date + ".csv")
+            mail.addAttachmentData(jsonData!, mimeType: "text/json", fileName: "pen_stroke_data_" + date + ".json")
 
             present(mail, animated: true, completion: nil)
         }
