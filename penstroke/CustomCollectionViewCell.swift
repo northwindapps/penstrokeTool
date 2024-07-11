@@ -55,13 +55,11 @@ class CustomCanvasView: PKCanvasView {
     var startTime: TimeInterval = 0
     private var dataManager: DataManagerProtocol
     private var annotation: String
-    private var startIdx: Int
 
     // Dependency Injection through initializer
     init(dataManager: DataManagerProtocol,annotation: String = "") {
         self.dataManager = dataManager
         self.annotation = annotation
-        self.startIdx = 1
         super.init(frame: .zero)
     }
 
@@ -135,9 +133,11 @@ class CustomCanvasView: PKCanvasView {
             dataManager.frame_widths.append("\(self.frame.width)")
             dataManager.frame_heights.append("\(self.frame.height)")
             //get the stroke length
-            let dis = calculateTraveledDistance(startIdx: startIdx)
+            var dis = calculateTraveledDistance()
+            if let last = Float(dataManager.traveled_distances.last ?? ""){
+                dis -= CGFloat(last)
+            }
             dataManager.traveled_distances.append("\(dis)")
-            startIdx=dataManager.x_coordinates.count+1
             
         }
     }
@@ -150,7 +150,7 @@ class CustomCanvasView: PKCanvasView {
         }
     }
     
-    func calculateTraveledDistance(startIdx:Int) -> CGFloat {
+    func calculateTraveledDistance() -> CGFloat {
             // Ensure coordinates arrays are not empty and have the same length
         guard dataManager.x_coordinates.count > 1, dataManager.x_coordinates.count == dataManager.y_coordinates.count else {
                 return 0.0
@@ -158,11 +158,11 @@ class CustomCanvasView: PKCanvasView {
             
             var totalDistance: CGFloat = 0.0
             
-        for i in startIdx..<dataManager.x_coordinates.count {
+        for i in 1..<dataManager.x_coordinates.count {
             if let x1 = Float(dataManager.x_coordinates[i - 1]),
                let y1 = Float(dataManager.y_coordinates[i - 1]),
                let x2 = Float(dataManager.x_coordinates[i]),
-               let y2 = Float(dataManager.y_coordinates[i]) {
+               let y2 = Float(dataManager.y_coordinates[i]), dataManager.timeStamps[i] != "0.0" {
                     let dx = CGFloat(x2 - x1)
                     let dy = CGFloat(y2 - y1)
                     let distance = sqrt(dx * dx + dy * dy)

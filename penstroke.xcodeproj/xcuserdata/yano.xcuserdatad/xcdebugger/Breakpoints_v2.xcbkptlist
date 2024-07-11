@@ -126,8 +126,8 @@
             filePath = "penstroke/CustomCollectionViewCell.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "139"
-            endingLineNumber = "139"
+            startingLineNumber = "140"
+            endingLineNumber = "140"
             landmarkName = "touchesEnded(_:with:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -137,6 +137,84 @@
          <BreakpointContent
             uuid = "7ACAF77E-3A82-4B88-B42A-8304D47AA4C6"
             shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "penstroke/CustomCollectionViewCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "136"
+            endingLineNumber = "136"
+            landmarkName = "touchesEnded(_:with:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6539E78F-9C36-4861-AF90-D5E019410922"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "penstroke/DataInjection.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "59"
+            endingLineNumber = "59"
+            landmarkName = "sumAllData()"
+            landmarkType = "7">
+            <Locations>
+               <Location
+                  uuid = "6539E78F-9C36-4861-AF90-D5E019410922 - 55c4e34910619ff7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "penstroke.DataManagerRepository.sumAllData() -&gt; Swift.Array&lt;penstroke.DataEntry&gt;"
+                  moduleName = "penstroke"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yano/Documents/iosDev/penstroke/penstroke/DataInjection.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59">
+               </Location>
+               <Location
+                  uuid = "6539E78F-9C36-4861-AF90-D5E019410922 - 55c4e34910619ff7"
+                  shouldBeEnabled = "Yes"
+                  ignoreCount = "0"
+                  continueAfterRunningActions = "No"
+                  symbolName = "penstroke.DataManagerRepository.sumAllData() -&gt; Swift.Array&lt;penstroke.DataEntry&gt;"
+                  moduleName = "penstroke"
+                  usesParentBreakpointCondition = "Yes"
+                  urlString = "file:///Users/yano/Documents/iosDev/penstroke/penstroke/DataInjection.swift"
+                  startingColumnNumber = "9223372036854775807"
+                  endingColumnNumber = "9223372036854775807"
+                  startingLineNumber = "59"
+                  endingLineNumber = "59">
+               </Location>
+            </Locations>
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "3909E65B-3614-48D1-8A45-8F59CD61438C"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "penstroke/DataInjection.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "60"
+            endingLineNumber = "60"
+            landmarkName = "sumAllData()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "AE54B9CA-D09D-4588-BD3C-B65F57B48E65"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "penstroke/CustomCollectionViewCell.swift"
