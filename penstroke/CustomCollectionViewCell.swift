@@ -39,8 +39,8 @@ class CustomCollectionViewCell: UICollectionViewCell {
         
         // Set up constraints for the custom view
         NSLayoutConstraint.activate([
-            customView.widthAnchor.constraint(equalToConstant: 120),
-            customView.heightAnchor.constraint(equalToConstant: 120),
+            customView.widthAnchor.constraint(equalToConstant: 50),//120
+            customView.heightAnchor.constraint(equalToConstant: 50),
             customView.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 10),
             customView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor) // Center horizontally within the cell
         ])
@@ -55,11 +55,13 @@ class CustomCanvasView: PKCanvasView {
     var startTime: TimeInterval = 0
     private var dataManager: DataManagerProtocol
     private var annotation: String
+    private var startIdx: Int
 
     // Dependency Injection through initializer
     init(dataManager: DataManagerProtocol,annotation: String = "") {
         self.dataManager = dataManager
         self.annotation = annotation
+        self.startIdx = 1
         super.init(frame: .zero)
     }
 
@@ -89,6 +91,7 @@ class CustomCanvasView: PKCanvasView {
             dataManager.y_coordinates.append("\(location.y)")
             dataManager.frame_widths.append("\(self.frame.width)")
             dataManager.frame_heights.append("\(self.frame.height)")
+            
 
         }
     }
@@ -110,6 +113,7 @@ class CustomCanvasView: PKCanvasView {
             dataManager.y_coordinates.append("\(location.y)")
             dataManager.frame_widths.append("\(self.frame.width)")
             dataManager.frame_heights.append("\(self.frame.height)")
+            
         }
     }
 
@@ -130,6 +134,11 @@ class CustomCanvasView: PKCanvasView {
             dataManager.y_coordinates.append("\(location.y)")
             dataManager.frame_widths.append("\(self.frame.width)")
             dataManager.frame_heights.append("\(self.frame.height)")
+            //get the stroke length
+            let dis = calculateTraveledDistance(startIdx: startIdx)
+            dataManager.traveled_distances.append("\(dis)")
+            startIdx=dataManager.x_coordinates.count+1
+            
         }
     }
 
@@ -140,6 +149,29 @@ class CustomCanvasView: PKCanvasView {
             //print("Touch cancelled at: \(location)")
         }
     }
+    
+    func calculateTraveledDistance(startIdx:Int) -> CGFloat {
+            // Ensure coordinates arrays are not empty and have the same length
+        guard dataManager.x_coordinates.count > 1, dataManager.x_coordinates.count == dataManager.y_coordinates.count else {
+                return 0.0
+            }
+            
+            var totalDistance: CGFloat = 0.0
+            
+        for i in startIdx..<dataManager.x_coordinates.count {
+            if let x1 = Float(dataManager.x_coordinates[i - 1]),
+               let y1 = Float(dataManager.y_coordinates[i - 1]),
+               let x2 = Float(dataManager.x_coordinates[i]),
+               let y2 = Float(dataManager.y_coordinates[i]) {
+                    let dx = CGFloat(x2 - x1)
+                    let dy = CGFloat(y2 - y1)
+                    let distance = sqrt(dx * dx + dy * dy)
+                    totalDistance += distance
+                }
+            }
+            
+            return totalDistance
+        }
     
     func addStroke(at points: [CGPoint], with color: UIColor = .black, width: CGFloat = 5.0) {
             let newStroke = createStroke(at: points, with: color, width: width)
@@ -178,6 +210,7 @@ class CustomCanvasView: PKCanvasView {
         copy.sample_tags = self.dataManager.sample_tags
         copy.frame_widths = self.dataManager.frame_widths
         copy.frame_heights = self.dataManager.frame_heights
+        copy.traveled_distances = self.dataManager.traveled_distances
         return copy
     }
     
@@ -191,6 +224,7 @@ class CustomCanvasView: PKCanvasView {
         dataManager.y_coordinates.removeAll()
         dataManager.frame_widths.removeAll()
         dataManager.frame_heights.removeAll()
+        dataManager.traveled_distances.removeAll()
     }
     
 }

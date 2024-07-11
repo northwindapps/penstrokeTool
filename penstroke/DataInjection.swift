@@ -16,6 +16,7 @@ protocol DataManagerProtocol {
     var sample_tags: [String] { get set }
     var frame_widths: [String] { get set }
     var frame_heights: [String] { get set }
+    var traveled_distances: [String] { get set }
 }
 
 class SharedDataManager: DataManagerProtocol {
@@ -27,6 +28,7 @@ class SharedDataManager: DataManagerProtocol {
     var sample_tags: [String] = []
     var frame_widths: [String] = []
     var frame_heights: [String] = []
+    var traveled_distances: [String] = []
 }
 
 struct DataEntry: Codable {
@@ -38,6 +40,7 @@ struct DataEntry: Codable {
     var sampleTag: String
     var frameWidth: String
     var frameHeight: String
+    var traveledDistances: [String]
 }
 
 class DataManagerRepository {
@@ -54,17 +57,20 @@ class DataManagerRepository {
         var dataArray: [DataEntry] = []
         
         for manager in dataManagers {
-            let entry = DataEntry(
-                timeStamps: manager.timeStamps,
-                events: manager.events,
-                xCoordinates: manager.x_coordinates,
-                yCoordinates: manager.y_coordinates,
-                annotation: manager.annotations.first ?? "",
-                sampleTag: manager.sample_tags.first ?? "",
-                frameWidth: manager.frame_widths.first ?? "",
-                frameHeight: manager.frame_heights.first ?? ""
-            )
-            dataArray.append(entry)
+            if manager.x_coordinates != [] && manager.y_coordinates != [] && manager.annotations != []{
+                let entry = DataEntry(
+                    timeStamps: manager.timeStamps,
+                    events: manager.events,
+                    xCoordinates: manager.x_coordinates,
+                    yCoordinates: manager.y_coordinates,
+                    annotation: manager.annotations.first ?? "",
+                    sampleTag: manager.sample_tags.first ?? "",
+                    frameWidth: manager.frame_widths.first ?? "",
+                    frameHeight: manager.frame_heights.first ?? "", 
+                    traveledDistances: manager.traveled_distances
+                )
+                dataArray.append(entry)
+            }
         }
         
         return dataArray
