@@ -39,8 +39,8 @@ class CustomCollectionViewCell: UICollectionViewCell {
         
         // Set up constraints for the custom view
         NSLayoutConstraint.activate([
-            customView.widthAnchor.constraint(equalToConstant: 50),//120
-            customView.heightAnchor.constraint(equalToConstant: 50),
+            customView.widthAnchor.constraint(equalToConstant: 120),//120
+            customView.heightAnchor.constraint(equalToConstant: 120),
             customView.topAnchor.constraint(equalTo: button.bottomAnchor, constant: 10),
             customView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor) // Center horizontally within the cell
         ])
@@ -82,7 +82,7 @@ class CustomCanvasView: PKCanvasView {
             
             //store data
             dataManager.timeStamps.append(String(relativeTimestamp))
-            dataManager.events.append("start")
+//            dataManager.events.append("start")
             dataManager.annotations.append(annotation)
             dataManager.sample_tags.append(String(self.tag))
             dataManager.x_coordinates.append("\(location.x)")
@@ -104,7 +104,7 @@ class CustomCanvasView: PKCanvasView {
             
             //store data
             dataManager.timeStamps.append(String(relativeTimestamp))
-            dataManager.events.append("move")
+//            dataManager.events.append("move")
             dataManager.annotations.append(annotation)
             dataManager.sample_tags.append(String(self.tag))
             dataManager.x_coordinates.append("\(location.x)")
@@ -125,7 +125,7 @@ class CustomCanvasView: PKCanvasView {
             
             //store data
             dataManager.timeStamps.append(String(relativeTimestamp))
-            dataManager.events.append("end")
+//            dataManager.events.append("end")
             dataManager.annotations.append(annotation)
             dataManager.sample_tags.append(String(self.tag))
             dataManager.x_coordinates.append("\(location.x)")
@@ -203,7 +203,7 @@ class CustomCanvasView: PKCanvasView {
     func copyDataManager() -> DataManagerProtocol {
         let copy = SharedDataManager()
         copy.timeStamps = self.dataManager.timeStamps
-        copy.events = self.dataManager.events
+//        copy.events = self.dataManager.events
         copy.x_coordinates = self.dataManager.x_coordinates
         copy.y_coordinates = self.dataManager.y_coordinates
         copy.annotations = self.dataManager.annotations
@@ -217,7 +217,7 @@ class CustomCanvasView: PKCanvasView {
     func deleteData(){
         //store data
         dataManager.timeStamps.removeAll()
-        dataManager.events.removeAll()
+//        dataManager.events.removeAll()
         dataManager.annotations.removeAll()
         dataManager.sample_tags.removeAll()
         dataManager.x_coordinates.removeAll()

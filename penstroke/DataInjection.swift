@@ -9,7 +9,7 @@ import Foundation
 
 protocol DataManagerProtocol {
     var timeStamps: [String] { get set }
-    var events: [String] { get set }
+//    var events: [String] { get set }
     var x_coordinates: [String] { get set }
     var y_coordinates: [String] { get set }
     var annotations: [String] { get set }
@@ -21,7 +21,7 @@ protocol DataManagerProtocol {
 
 class SharedDataManager: DataManagerProtocol {
     var timeStamps: [String] = []
-    var events: [String] = [] // start, move, end
+    //var events: [String] = [] // start, move, end
     var x_coordinates: [String] = []
     var y_coordinates: [String] = []
     var annotations: [String] = []
@@ -33,7 +33,7 @@ class SharedDataManager: DataManagerProtocol {
 
 struct DataEntry: Codable {
     var timeStamps: [String]
-    var events: [String]
+    //var events: [String]
     var xCoordinates: [String]
     var yCoordinates: [String]
     var annotation: String
@@ -60,7 +60,7 @@ class DataManagerRepository {
             if manager.x_coordinates != [] && manager.y_coordinates != [] && manager.annotations != []{
                 let entry = DataEntry(
                     timeStamps: manager.timeStamps,
-                    events: manager.events,
+//                    events: manager.events,
                     xCoordinates: manager.x_coordinates,
                     yCoordinates: manager.y_coordinates,
                     annotation: manager.annotations.first ?? "",

@@ -162,36 +162,6 @@
             endingLineNumber = "59"
             landmarkName = "sumAllData()"
             landmarkType = "7">
-            <Locations>
-               <Location
-                  uuid = "6539E78F-9C36-4861-AF90-D5E019410922 - 55c4e34910619ff7"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "penstroke.DataManagerRepository.sumAllData() -&gt; Swift.Array&lt;penstroke.DataEntry&gt;"
-                  moduleName = "penstroke"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/yano/Documents/iosDev/penstroke/penstroke/DataInjection.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "59"
-                  endingLineNumber = "59">
-               </Location>
-               <Location
-                  uuid = "6539E78F-9C36-4861-AF90-D5E019410922 - 55c4e34910619ff7"
-                  shouldBeEnabled = "Yes"
-                  ignoreCount = "0"
-                  continueAfterRunningActions = "No"
-                  symbolName = "penstroke.DataManagerRepository.sumAllData() -&gt; Swift.Array&lt;penstroke.DataEntry&gt;"
-                  moduleName = "penstroke"
-                  usesParentBreakpointCondition = "Yes"
-                  urlString = "file:///Users/yano/Documents/iosDev/penstroke/penstroke/DataInjection.swift"
-                  startingColumnNumber = "9223372036854775807"
-                  endingColumnNumber = "9223372036854775807"
-                  startingLineNumber = "59"
-                  endingLineNumber = "59">
-               </Location>
-            </Locations>
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
