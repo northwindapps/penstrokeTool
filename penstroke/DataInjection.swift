@@ -55,22 +55,74 @@ class DataManagerRepository {
     
     func sumAllData() -> [DataEntry] {
         var dataArray: [DataEntry] = []
-        
+    
         for manager in dataManagers {
             if manager.x_coordinates != [] && manager.y_coordinates != [] && manager.annotations != []{
-                let entry = DataEntry(
-                    timeStamps: manager.timeStamps,
-//                    events: manager.events,
-                    xCoordinates: manager.x_coordinates,
-                    yCoordinates: manager.y_coordinates,
-                    annotation: manager.annotations.first ?? "",
-                    sampleTag: manager.sample_tags.first ?? "",
-                    frameWidth: manager.frame_widths.first ?? "",
-                    frameHeight: manager.frame_heights.first ?? "", 
-                    traveledDistances: manager.traveled_distances
-                )
-                dataArray.append(entry)
-            }
+                let indices = manager.timeStamps.enumerated().compactMap { index, element in
+                    element == "0.0" ? index : nil
+                }
+                
+                var mngTime = [String]()
+                var mngX = [String]()
+                var mngY = [String]()
+                var mngS = [String]()
+                var cnter = 0
+                
+                for (i,each) in manager.timeStamps.enumerated(){
+                    if indices.contains(i){
+                        if mngTime.count>0{
+                            var sampleStr = mngS.first ?? ""
+                            if indices.count > 1 {
+                                sampleStr += "-" + String(cnter)
+                            }
+                            let entry = DataEntry(
+                                timeStamps: mngTime,
+                                xCoordinates: mngX,
+                                yCoordinates: mngY,
+                                annotation: manager.annotations.first ?? "",
+                                sampleTag: sampleStr,
+                                frameWidth: manager.frame_widths.first ?? "",
+                                frameHeight: manager.frame_widths.last ?? "",
+                                traveledDistances: manager.traveled_distances
+                            )
+                            cnter += 1
+                            dataArray.append(entry)
+                            mngTime = []
+                            mngX = []
+                            mngY = []
+                            mngS = []
+                        }
+                    }
+                    
+                    //append item
+                    mngTime.append(manager.timeStamps[i])
+                    mngX.append(manager.x_coordinates[i])
+                    mngY.append(manager.y_coordinates[i])
+                    mngS.append(manager.sample_tags[i])
+                }//loopend
+                if mngTime.count>0{
+                    var sampleStr = mngS.first ?? ""
+                    if indices.count > 1 {
+                        sampleStr += "-" + String(cnter)
+                    }
+                    let entry = DataEntry(
+                        timeStamps: mngTime,
+                        xCoordinates: mngX,
+                        yCoordinates: mngY,
+                        annotation: manager.annotations.first ?? "",
+                        sampleTag: sampleStr,
+                        frameWidth: manager.frame_widths.first ?? "",
+                        frameHeight: manager.frame_widths.last ?? "",
+                        traveledDistances: manager.traveled_distances
+                    )
+                    cnter = 0
+                    dataArray.append(entry)
+                    mngTime = []
+                    mngX = []
+                    mngY = []
+                    mngS = []
+                }
+            }//manager loop
         }
         
         return dataArray
