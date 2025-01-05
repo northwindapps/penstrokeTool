@@ -2,7 +2,7 @@ import UIKit
 import PencilKit
 import MessageUI
 
-class ViewController: BaseController, UICollectionViewDataSource, UICollectionViewDelegate, UITabBarDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate{
+class EditViewController: BaseController, UICollectionViewDataSource, UICollectionViewDelegate, UITabBarDelegate, UITextFieldDelegate, MFMailComposeViewControllerDelegate{
 
     var collectionView: UICollectionView!
     var tapGestureRecognizer: UITapGestureRecognizer!
@@ -11,31 +11,18 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     var textField: UITextField!
     var label: UILabel!
     var button: UIButton!
+    var button2: UIButton!
     var counter: Int!
-    var coordinatesData: [DataModel] = []
-    
-    struct DataModel: Codable {
-        // Define properties matching the structure of your JSON data
-        let xCoordinates: [String]
-        let yCoordinates: [String]
-        let frameHeight: String
-        let traveledDistances: [String]
-        let timeStamps: [String]
-        let sampleTag: String
-    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
         
         counter = 0
         // Initialize text field
         textField = UITextField()
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.borderStyle = .roundedRect
-        textField.autocorrectionType = .no          
+        textField.autocorrectionType = .no
         textField.smartInsertDeleteType = .no
         textField.placeholder = "Enter any annotation letter here"
         textField.delegate = self
@@ -51,13 +38,21 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         // Initialize button
         button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
-        button.setTitle("Editview", for: .normal)
+        button.setTitle("Add to the list", for: .normal)
         button.addTarget(self, action: #selector(buttonAddToList), for: .touchUpInside)
+        
+        // Initialize button
+        button2 = UIButton(type: .system)
+        button2.translatesAutoresizingMaskIntoConstraints = false
+        button2.setTitle("Back to showview", for: .normal)
+        button2.addTarget(self, action: #selector(backToShow), for: .touchUpInside)
+        
         
         // Add text field, label, and button to view
         self.view.addSubview(textField)
         self.view.addSubview(label)
         self.view.addSubview(button)
+        self.view.addSubview(button2)
         
         
         // Initialize layout
@@ -82,7 +77,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         collectionView.addGestureRecognizer(tapGestureRecognizer)
         
         // Disable scrolling
-        collectionView.isScrollEnabled = true
+        collectionView.isScrollEnabled = false
         collectionView.isUserInteractionEnabled = true
         
         // Initialize tab bar
@@ -112,8 +107,12 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
             // Button constraints
             button.centerYAnchor.constraint(equalTo: label.centerYAnchor),
             button.leadingAnchor.constraint(equalTo: label.trailingAnchor, constant: 10),
-            button.trailingAnchor.constraint(equalTo: self.view.trailingAnchor, constant: -10),
             button.widthAnchor.constraint(equalToConstant: 150),
+            
+            // Button2 constraints
+            button2.centerYAnchor.constraint(equalTo: button.centerYAnchor),
+            button2.leadingAnchor.constraint(equalTo: button.trailingAnchor, constant: 10),
+            button2.widthAnchor.constraint(equalToConstant: 150),
             
             // Collection view constraints
             collectionView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10),
@@ -127,49 +126,6 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
             tabBar.bottomAnchor.constraint(equalTo: self.view.safeAreaLayoutGuide.bottomAnchor),
             tabBar.heightAnchor.constraint(equalToConstant: 49) // Default height for UITabBar
         ])
-        
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        //TODO
-        loadJSONL()
-    }
-    
-    private func loadJSONL(){
-        if let filePath = Bundle.main.path(forResource: "train", ofType: "jsonl") {
-            do {
-                // Read the file contents as a string
-                let fileContents = try String(contentsOfFile: filePath, encoding: .utf8)
-                
-                // Optional: Clean the file contents by removing escape characters like '\n'
-                var cleanedContents = fileContents.replacingOccurrences(of: "\n", with: "")
-                
-                cleanedContents = cleanedContents.replacingOccurrences(of: "}  {", with: "}\n{")
-                
-                // Split the content by lines (if it's a JSONL file)
-                let lines = cleanedContents.split(separator: "\n")
-                
-                // Parse each line (which is a separate JSON object)
-                for line in lines {
-                    if let data = line.data(using: .utf8) {
-                        do {
-                            // Decode the JSON into a DataModel object
-                            let decoder = JSONDecoder()
-                            let decodedObject = try decoder.decode(DataModel.self, from: data)
-                            
-                            // Now you can work with the decoded object
-                            print(decodedObject)
-                            self.coordinatesData.append(decodedObject)
-                        } catch {
-                            print("Error decoding JSON: \(error)")
-                        }
-                    }
-                }
-            } catch {
-                print("Error reading file: \(error)")
-            }
-        }
     }
     
     
@@ -187,15 +143,56 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         textField.resignFirstResponder()  // Dismiss keyboard
         return true
     }
-    
-    @objc func buttonAddToList() {
-        print("move to editview")
-        if let editVC = self.storyboard?.instantiateViewController(withIdentifier: "editview") as? EditViewController {
-            editVC.modalPresentationStyle = .fullScreen
-            self.present(editVC, animated: true, completion: nil)
+    @objc func backToShow() {
+        if let VC = self.storyboard?.instantiateViewController(withIdentifier: "showview") as? ViewController {
+            VC.modalPresentationStyle = .fullScreen
+            self.present(VC, animated: true, completion: nil)
         } else {
             print("Could not instantiate EditViewController")
         }
+    }
+    
+    @objc func buttonAddToList() {
+        print("Add to the list")
+        
+        let numberOfItems = collectionView.numberOfItems(inSection: 0)
+        var indexPaths: [IndexPath] = []
+
+        for row in 0..<numberOfItems {
+            let indexPath = IndexPath(row: row, section: 0)
+            indexPaths.append(indexPath)
+        }
+        
+        for idx in indexPaths{
+            if let cell = collectionView.cellForItem(at: idx) as? CustomCollectionViewCell {
+                if cell.customView.drawing.strokes.isEmpty {
+                    print("error some canvas are empty.")
+                    return
+                }
+                let customView = cell.customView
+                // Handle customView here
+                DataManagerRepository.shared.addDataManager(customView.copyDataManager() as! SharedDataManager)
+            }
+        }
+        
+        let aggregatedData = DataManagerRepository.shared.sumAllData()
+        // Print aggregated data
+        print("Data Count: \(aggregatedData.count)")
+        print("Loop",counter as Any)
+
+        
+        for idx in indexPaths{
+            if let cell = collectionView.cellForItem(at: idx) as? CustomCollectionViewCell {
+                let customView = cell.customView
+                customView.deleteData()
+                customView.drawing = PKDrawing()
+            }
+        }
+        
+      
+        counter += 1
+        label.text = "Item cnt:" + String(10*counter)
+        
     }
     
     @objc func handleTapGesture(_ gesture: UITapGestureRecognizer) {
@@ -306,69 +303,20 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     // MARK: - UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return coordinatesData.count // Number of items
+        return 10 // Number of items
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let data = coordinatesData[indexPath.row]
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "customCell", for: indexPath) as! CustomCollectionViewCell
         cell.backgroundColor = .clear
-        cell.button.setTitle("Reset Item \(indexPath.row) \(data.sampleTag)", for: .normal)
+        cell.button.setTitle("Reset Item \(indexPath.row)", for: .normal)
         cell.button.tag = indexPath.row
         cell.customView.drawing = PKDrawing()
-        
-        // Create an array of PKStroke objects based on coordinatesData
-        let points: [PKStrokePoint] = createStrokePoints(from: data)
-        
-        // Create a PKStrokePath with the points
-        let strokePath = PKStrokePath(controlPoints: points, creationDate: Date())
-        
-        // Create a PKStroke with the path (you can customize ink style)
-        let ink = PKInk(.pen, color: .black) // example ink style
-        let stroke = PKStroke(ink: ink, path: strokePath)
-        
-        // Add the stroke to a drawing
-        let drawing = PKDrawing(strokes: [stroke])
-                
-        // Add the stroke to the canvas
-        cell.customView.drawing = drawing
-        
         cell.customView.tag = indexPath.row
         cell.customView.configure(withAnnotation: textField.text ?? "")
         // Custom view can be configured here if needed
         cell.button.addTarget(self, action: #selector(buttonClearView), for: .touchUpInside)
         return cell
-    }
-    
-    // Helper function to create PKStrokePoints from the DataModel's coordinates
-    func createStrokePoints(from data: DataModel) -> [PKStrokePoint] {
-        var points: [PKStrokePoint] = []
-        
-        for (index, (x, y)) in zip(data.xCoordinates, data.yCoordinates).enumerated() {
-            let xValue = CGFloat((x as NSString).doubleValue)
-            let yValue = CGFloat((y as NSString).doubleValue)
-
-            // Sample values for the required parameters
-            let timeOffset: TimeInterval = Double(index) * 0.1  // example increment
-            let size = CGSize(width: 5, height: 5)  // example size
-            let opacity: CGFloat = 1.0  // full opacity
-            let force: CGFloat = 1.0  // force value, this can be adjusted based on your data
-            let azimuth: CGFloat = 0.0  // azimuth in radians, this would depend on your data
-            let altitude: CGFloat = 0.0  // altitude in radians, this can be adjusted
-
-            // Create the PKStrokePoint
-            let point = PKStrokePoint(location: CGPoint(x: xValue, y: yValue),
-                                      timeOffset: timeOffset,
-                                      size: size,
-                                      opacity: opacity,
-                                      force: force,
-                                      azimuth: azimuth,
-                                      altitude: altitude)
-
-            points.append(point)
-        }
-        
-        return points
     }
     
     @objc func buttonClearView(sender: UIButton) {
@@ -394,11 +342,11 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
 //            let visibleIndexPaths = collectionView.indexPathsForVisibleItems
 //            let totalItems = collectionView.numberOfItems(inSection: 0)
 //            var allIndexPaths = [IndexPath]()
-//            
+//
 //            for i in 0..<totalItems {
 //                allIndexPaths.append(IndexPath(item: i, section: 0))
 //            }
-//            
+//
 //            let offScreenIndexPaths = allIndexPaths.filter { !visibleIndexPaths.contains($0) }
 //            //print("Off-screen cells: \(offScreenIndexPaths.map { $0.row })")
 //        }
