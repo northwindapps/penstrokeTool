@@ -73,7 +73,7 @@ class DataManagerRepository {
                         if mngTime.count>0{
                             var sampleStr = mngS.first ?? ""
                             if indices.count > 1 {
-                                sampleStr += "-" + String(cnter)
+                                sampleStr += "_" + String(cnter)
                             }
                             let entry = DataEntry(
                                 timeStamps: mngTime,
@@ -103,7 +103,7 @@ class DataManagerRepository {
                 if mngTime.count>0{
                     var sampleStr = mngS.first ?? ""
                     if indices.count > 1 {
-                        sampleStr += "-" + String(cnter)
+                        sampleStr += "_" + String(cnter)
                     }
                     let entry = DataEntry(
                         timeStamps: mngTime,
