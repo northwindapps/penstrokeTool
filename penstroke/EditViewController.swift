@@ -115,7 +115,7 @@ class EditViewController: BaseController, UICollectionViewDataSource, UICollecti
             button2.widthAnchor.constraint(equalToConstant: 150),
             
             // Collection view constraints
-            collectionView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 10),
+            collectionView.topAnchor.constraint(equalTo: label.bottomAnchor, constant: 5),
             collectionView.leadingAnchor.constraint(equalTo: self.view.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: self.view.trailingAnchor),
             collectionView.bottomAnchor.constraint(equalTo: tabBar.topAnchor),
@@ -303,7 +303,7 @@ class EditViewController: BaseController, UICollectionViewDataSource, UICollecti
     // MARK: - UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 10 // Number of items
+        return 20 // Number of items
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

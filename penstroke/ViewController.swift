@@ -13,6 +13,8 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     var button: UIButton!
     var counter: Int!
     var coordinatesData: [DataModel] = []
+    var points: [PKStrokePoint] = []
+    var pointsArray: [[PKStrokePoint]] = []
     
     struct DataModel: Codable {
         // Define properties matching the structure of your JSON data
@@ -26,10 +28,6 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        
-        
-        
         counter = 0
         // Initialize text field
         textField = UITextField()
@@ -134,10 +132,18 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
     override func viewWillAppear(_ animated: Bool) {
         //TODO
         loadJSONL()
+        // Assuming coordinatesData contains a list of DataModel instances
+        for each in coordinatesData {
+            // Create an array of PKStrokePoints for each item in coordinatesData
+            let points = createStrokePoints(from: each)
+            
+            // Append this array to the pointsArray
+            pointsArray.append(points)
+        }
     }
     
     private func loadJSONL(){
-        if let filePath = Bundle.main.path(forResource: "train", ofType: "jsonl") {
+        if let filePath = Bundle.main.path(forResource: "train copy380", ofType: "jsonl") {
             do {
                 // Read the file contents as a string
                 let fileContents = try String(contentsOfFile: filePath, encoding: .utf8)
@@ -145,10 +151,12 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
                 // Optional: Clean the file contents by removing escape characters like '\n'
                 var cleanedContents = fileContents.replacingOccurrences(of: "\n", with: "")
                 
-                cleanedContents = cleanedContents.replacingOccurrences(of: "}  {", with: "}\n{")
+                
+                
+                cleanedContents = cleanedContents.replacingOccurrences(of: "}{", with: "}!!!{")
                 
                 // Split the content by lines (if it's a JSONL file)
-                let lines = cleanedContents.split(separator: "\n")
+                let lines = cleanedContents.components(separatedBy: "!!!")
                 
                 // Parse each line (which is a separate JSON object)
                 for line in lines {
@@ -318,7 +326,7 @@ class ViewController: BaseController, UICollectionViewDataSource, UICollectionVi
         cell.customView.drawing = PKDrawing()
         
         // Create an array of PKStroke objects based on coordinatesData
-        let points: [PKStrokePoint] = createStrokePoints(from: data)
+        let points: [PKStrokePoint] = pointsArray[indexPath.row]//createStrokePoints(from: data)
         
         // Create a PKStrokePath with the points
         let strokePath = PKStrokePath(controlPoints: points, creationDate: Date())
