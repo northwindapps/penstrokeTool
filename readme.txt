@@ -3,6 +3,8 @@ use oneLine.py first,then use datasetUploadScript.py
 //reset dataset
 rm -rf ~/.cache/huggingface/datasets/*    
 
+//
+dont make a linebreak at the end of examples, the rewrite won't get triggered.
 
 1_0v
 2_0v
