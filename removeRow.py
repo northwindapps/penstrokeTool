@@ -2,7 +2,7 @@ import json
 import os
 
 # Replace 'data.json' with the path to your JSONL file
-file_path = '/Users/yano/Documents/penstrokeTool/data/test/test.jsonl'
+file_path = '/Users/yano/Documents/penstrokeTool/data/train/additional.jsonl'
 # Define the output file path
 output_file_path = '/Users/yano/Documents/penstrokeTool/data/train/no_vh.jsonl'
 
@@ -16,8 +16,8 @@ with open(file_path, 'r') as file:
         # Check if line does not contain "v" or "h"
         try:
             data = json.loads(line)  # Parse JSON
-            if data["sampleTag"] != "1v":
-            # if data["sampleTag"] != "bs" and data["sampleTag"] != "h" and data["sampleTag"] != "v":
+            # if data["sampleTag"] == "bs":
+            if data["sampleTag"] != "bs" and data["sampleTag"] != "h" and data["sampleTag"] != "v":
              array.append(data)
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON: {e}")
