@@ -53,4 +53,4 @@ dataset_dict = DatasetDict({
 
 # Push the dataset to the Hugging Face Hub
 # newbienewbie/handwriting_strokes_2strokes
-dataset_dict.push_to_hub("newbienewbie/handwriting_strokes_2strokes")
+dataset_dict.push_to_hub("newbienewbie/handwriting_edge_case_in_one_stroke")

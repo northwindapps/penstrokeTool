@@ -16,8 +16,8 @@ with open(file_path, 'r') as file:
         # Check if line does not contain "v" or "h"
         try:
             data = json.loads(line)  # Parse JSON
-            # if data["sampleTag"] == "bs":
-            if data["sampleTag"] != "bs" and data["sampleTag"] != "h" and data["sampleTag"] != "v":
+            if data["sampleTag"] != "slash":
+            # if data["sampleTag"] != "bs" and data["sampleTag"] != "h" and data["sampleTag"] != "v":
              array.append(data)
         except json.JSONDecodeError as e:
             print(f"Error decoding JSON: {e}")

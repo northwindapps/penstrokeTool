@@ -303,7 +303,7 @@ class EditViewController: BaseController, UICollectionViewDataSource, UICollecti
     // MARK: - UICollectionViewDataSource
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 18//20 // Number of items
+        return 7//18//20 // Number of items
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
